@@ -12,31 +12,34 @@
     href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet">
   <style>
-    /* ── TOKENS ── */
     :root[data-theme="dark"] {
       --bg: #0f1117;
       --surface: #181c27;
       --surface2: #1e2436;
+      --surface3: #242b40;
       --border: #252c3f;
       --text: #e8ecf4;
       --text-dim: #6b788f;
       --text-muted: #363f55;
       --shadow: rgba(0, 0, 0, .35);
-      --hd-bg: rgba(15, 17, 23, .92);
-      --ft-bg: rgba(15, 17, 23, .88);
+      --hd-bg: rgba(15, 17, 23, .93);
+      --ft-bg: rgba(15, 17, 23, .90);
+      --drop-bg: #1e2436;
     }
 
     :root[data-theme="light"] {
-      --bg: #f4f5f8;
+      --bg: #f0f2f7;
       --surface: #ffffff;
-      --surface2: #f0f2f7;
+      --surface2: #f4f5f9;
+      --surface3: #eaecf3;
       --border: #dde1ea;
       --text: #111827;
       --text-dim: #6b7280;
       --text-muted: #b0b7c3;
-      --shadow: rgba(0, 0, 0, .08);
-      --hd-bg: rgba(244, 245, 248, .92);
-      --ft-bg: rgba(244, 245, 248, .88);
+      --shadow: rgba(0, 0, 0, .07);
+      --hd-bg: rgba(240, 242, 247, .93);
+      --ft-bg: rgba(240, 242, 247, .90);
+      --drop-bg: #ffffff;
     }
 
     :root {
@@ -47,6 +50,7 @@
       --red-bg: rgba(225, 29, 72, .10);
       --yellow: #f59e0b;
       --r: 14px;
+      --rs: 9px;
     }
 
     :root[data-theme="light"] {
@@ -77,11 +81,11 @@
       transition: background .25s, color .25s;
     }
 
-    /* ── HEADER ── */
+    /* HEADER */
     .hd {
       position: sticky;
       top: env(safe-area-inset-top, 0px);
-      z-index: 20;
+      z-index: 30;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -118,7 +122,6 @@
     .hd-sub {
       font-size: 10px;
       color: var(--text-dim);
-      font-weight: 400;
       letter-spacing: .2px;
     }
 
@@ -128,7 +131,6 @@
       gap: 10px;
     }
 
-    /* toggle tema */
     .theme-btn {
       width: 36px;
       height: 20px;
@@ -159,7 +161,6 @@
       background: var(--accent);
     }
 
-    /* sync dot */
     .sync-dot {
       width: 8px;
       height: 8px;
@@ -194,9 +195,9 @@
       }
     }
 
-    /* ── WRAP ── */
+    /* WRAP */
     .wrap {
-      padding: 22px 16px 90px;
+      padding: 22px 16px 100px;
       max-width: 460px;
       margin: 0 auto;
     }
@@ -210,7 +211,7 @@
       margin-bottom: 9px;
     }
 
-    /* ── IMPORTE ── */
+    /* IMPORTE */
     .imp-box {
       background: var(--surface);
       border: 1.5px solid var(--border);
@@ -220,7 +221,7 @@
       padding: 0 16px;
       margin-bottom: 28px;
       box-shadow: 0 2px 8px var(--shadow);
-      transition: border-color .2s, background .25s, box-shadow .25s;
+      transition: border-color .2s, background .25s;
     }
 
     .imp-box:focus-within {
@@ -254,163 +255,314 @@
       color: var(--text-muted);
     }
 
-    /* ── PLANES ── */
-    .planes {
+    /* SLOTS */
+    .slots {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .plan {
+    .slot {
       background: var(--surface);
       border: 1.5px solid var(--border);
       border-radius: var(--r);
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 2px 6px var(--shadow);
-      transition: background .25s, border-color .25s, box-shadow .25s;
+      transition: border-color .2s, background .25s;
+      position: relative;
     }
 
-    .plan.descuento {
-      border-color: rgba(22, 163, 74, .30);
+    .slot.has-plan {
+      border-color: var(--accent);
     }
 
-    .plan.recargo {
-      border-color: rgba(225, 29, 72, .18);
+    .slot.has-result.descuento {
+      border-color: rgba(22, 163, 74, .35);
     }
 
-    .plan.neutro {
-      border-color: rgba(79, 126, 255, .22);
+    .slot.has-result.recargo {
+      border-color: rgba(225, 29, 72, .20);
     }
 
-    .plan-top {
+    .slot.has-result.neutro {
+      border-color: rgba(79, 126, 255, .28);
+    }
+
+    .slot-header {
       display: flex;
       align-items: center;
-      padding: 12px 14px;
-      gap: 10px;
+      gap: 8px;
+      padding: 11px 14px;
     }
 
-    .plan-icon {
-      font-size: 18px;
+    .slot-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
       flex-shrink: 0;
+      transition: background .2s, color .2s, border-color .2s;
     }
 
-    .plan-info {
+    .slot.has-plan .slot-num {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* SELECTOR */
+    .selector-wrap {
       flex: 1;
+      position: relative;
       min-width: 0;
     }
 
-    .plan-name {
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .selector-input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--rs);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 8px 32px 8px 10px;
+      outline: none;
+      transition: border-color .2s, background .25s;
+      cursor: pointer;
+      -webkit-appearance: none;
     }
 
-    .plan-sub {
-      font-size: 11px;
+    .selector-input:focus {
+      border-color: var(--accent);
+    }
+
+    .selector-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .selector-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--text-dim);
-      margin-top: 2px;
+      font-size: 11px;
+      pointer-events: none;
     }
 
-    .plan-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 20px;
+    /* CLEAR BTN */
+    .slot-clear {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s, color .15s;
     }
 
-    .plan-badge.desc {
-      background: var(--green-bg);
-      color: var(--green);
-    }
-
-    .plan-badge.rec {
+    .slot-clear:active {
       background: var(--red-bg);
       color: var(--red);
     }
 
-    .plan-badge.neu {
+    .slot.has-plan .slot-clear {
+      display: flex;
+    }
+
+    /* DROPDOWN */
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--drop-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--rs);
+      overflow: hidden;
+      box-shadow: 0 8px 24px var(--shadow);
+      display: none;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .dropdown.open {
+      display: block;
+    }
+
+    .drop-item {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: background .12s;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .drop-item:last-child {
+      border-bottom: none;
+    }
+
+    .drop-item:active,
+    .drop-item:hover {
+      background: var(--surface2);
+    }
+
+    .drop-item-name {
+      font-weight: 500;
+    }
+
+    .drop-item-code {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .drop-item-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .drop-item-badge.desc {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .drop-item-badge.rec {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .drop-item-badge.neu {
       background: rgba(79, 126, 255, .12);
       color: var(--accent);
     }
 
-    .plan-bottom {
+    .drop-empty {
+      padding: 12px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* RESULTADO DEL SLOT */
+    .slot-result {
       border-top: 1px solid var(--border);
-      padding: 11px 14px;
-      display: flex;
+      padding: 10px 14px;
+      display: none;
       align-items: flex-end;
       justify-content: space-between;
       transition: border-color .25s;
     }
 
-    .plan-bottom-label {
+    .slot.has-result .slot-result {
+      display: flex;
+    }
+
+    .slot-result-label {
       font-size: 11px;
       color: var(--text-dim);
     }
 
-    .plan-total {
-      font-family: 'DM Mono', monospace;
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -.5px;
-    }
-
-    .plan-total.desc {
-      color: var(--green);
-    }
-
-    .plan-total.rec {
-      color: var(--text);
-    }
-
-    .plan-total.neu {
-      color: var(--accent);
-    }
-
-    .plan-cuota {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 3px;
-      text-align: right;
-    }
-
-    .plan-ahorro {
+    .slot-result-ahorro {
       font-size: 11px;
       font-weight: 500;
       color: var(--green);
       margin-top: 2px;
     }
 
-    /* ── EMPTY / MSG ── */
-    .empty {
-      text-align: center;
-      padding: 52px 24px;
+    .slot-result-total {
+      font-family: 'DM Mono', monospace;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -.5px;
+      text-align: right;
+    }
+
+    .slot-result-total.desc {
+      color: var(--green);
+    }
+
+    .slot-result-total.rec {
+      color: var(--text);
+    }
+
+    .slot-result-total.neu {
+      color: var(--accent);
+    }
+
+    .slot-result-cuota {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
       color: var(--text-dim);
-      font-size: 14px;
-      line-height: 1.6;
+      margin-top: 2px;
+      text-align: right;
     }
 
-    .empty-icon {
-      font-size: 40px;
-      margin-bottom: 14px;
-      opacity: .45;
+    /* BTN CALCULAR */
+    .btn-calc {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--r);
+      padding: 15px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity .15s, transform .1s;
+      opacity: .4;
+      pointer-events: none;
     }
 
+    .btn-calc.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .btn-calc:active {
+      transform: scale(.98);
+      opacity: .85;
+    }
+
+    /* MSG */
     .msg {
       text-align: center;
-      padding: 36px 24px;
+      padding: 20px 24px;
       font-size: 13px;
       color: var(--text-dim);
       line-height: 1.6;
     }
 
     .msg-icon {
-      font-size: 30px;
-      margin-bottom: 10px;
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
     .msg small {
@@ -420,7 +572,7 @@
       font-size: 12px;
     }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     .footer {
       position: fixed;
       bottom: 0;
@@ -436,7 +588,7 @@
       transition: background .25s, border-color .25s;
     }
 
-    .btn {
+    .btn-footer {
       flex: 1;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
@@ -449,7 +601,7 @@
       transition: opacity .15s, transform .1s;
     }
 
-    .btn:active {
+    .btn-footer:active {
       opacity: .8;
       transform: scale(.97);
     }
@@ -483,7 +635,7 @@
       </div>
     </div>
     <div class="hd-right">
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema"></button>
+      <button class="theme-btn" onclick="toggleTheme()" title="Cambiar tema"></button>
       <div class="sync-dot loading" id="syncDot"></div>
     </div>
   </div>
@@ -493,142 +645,273 @@
     <div class="imp-box">
       <span class="imp-sym">$</span>
       <input class="imp-input" id="importe" type="number" inputmode="numeric" placeholder="0" min="0" step="1"
-        oninput="calcPlanes()">
+        oninput="onImporteChange()">
     </div>
 
-    <div class="sect-label">Planes disponibles</div>
-    <div id="planes" class="planes">
-      <div class="msg">
-        <div class="msg-icon">⏳</div>Cargando planes…
-      </div>
-    </div>
+    <div class="sect-label">Seleccioná los planes</div>
+    <div class="slots" id="slots"></div>
+
+    <button class="btn-calc" id="btnCalc" onclick="calcular()">Calcular</button>
+
+    <div id="msgArea"></div>
   </div>
 
   <div class="footer">
-    <button class="btn btn-refresh" onclick="cargarPlanes()">↻ Actualizar</button>
-    <button class="btn btn-share" id="btnShare" onclick="compartir()">Compartir 📤</button>
+    <button class="btn-footer btn-refresh" onclick="recargarPlanes()">↻ Actualizar</button>
+    <button class="btn-footer btn-share" id="btnShare" onclick="compartir()">Compartir 📤</button>
   </div>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPlyGrh6cPmcxVz7o0XQ9_3Vte2-K8L3MOaklbpd62XEWY73R7FlqzJYysIWrf2_ds/exec';
+    const N_SLOTS = 4;
 
-    let planes = [];
+    let todosLosPlanes = [];   // datos del sheet
+    let seleccion = [null, null, null, null];  // plan elegido por slot
+    let resultados = [null, null, null, null];  // totales calculados
+    let dropdownAbierto = -1;
 
-    // ── TEMA ────────────────────────────────────────────────────────────────────
+    // ── TEMA ─────────────────────────────────────────────────────────────────────
     const savedTheme = localStorage.getItem('aj-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-
     function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('aj-theme', next);
     }
 
-    // ── INIT ────────────────────────────────────────────────────────────────────
+    // ── INIT ─────────────────────────────────────────────────────────────────────
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.selector-wrap')) cerrarDropdowns();
+    });
+
     cargarPlanes();
 
     async function cargarPlanes() {
       setSyncDot('loading');
-      document.getElementById('planes').innerHTML =
-        '<div class="msg"><div class="msg-icon">⏳</div>Cargando planes…</div>';
-      document.getElementById('btnShare').classList.remove('visible');
-
       try {
         const res = await fetch(SCRIPT_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        if (!json.planes || !json.planes.length) throw new Error('Sin datos en el sheet');
-        planes = json.planes;
+        if (!json.planes?.length) throw new Error('Sin datos en el sheet');
+        todosLosPlanes = json.planes;
         setSyncDot('ok');
-        calcPlanes();
+        renderSlots();
       } catch (e) {
         setSyncDot('err');
-        document.getElementById('planes').innerHTML = `
-      <div class="msg">
-        <div class="msg-icon">⚠️</div>
-        No se pudo cargar los planes.
-        <small>${e.message}</small>
-      </div>`;
+        document.getElementById('slots').innerHTML =
+          `<div class="msg"><div class="msg-icon">⚠️</div>No se pudo cargar los planes.<small>${e.message}</small></div>`;
       }
     }
 
-    // ── CALCULAR ─────────────────────────────────────────────────────────────────
-    function calcPlanes() {
-      const importe = parseFloat(document.getElementById('importe').value) || 0;
-      const cont = document.getElementById('planes');
-      const btnShare = document.getElementById('btnShare');
+    async function recargarPlanes() {
+      seleccion = [null, null, null, null];
+      resultados = [null, null, null, null];
+      document.getElementById('btnShare').classList.remove('visible');
+      await cargarPlanes();
+    }
 
-      if (!planes.length) return;
+    // ── RENDER SLOTS ──────────────────────────────────────────────────────────────
+    function renderSlots() {
+      const cont = document.getElementById('slots');
+      cont.innerHTML = Array.from({ length: N_SLOTS }, (_, i) => `
+    <div class="slot" id="slot-${i}">
+      <div class="slot-header">
+        <div class="slot-num">${i + 1}</div>
+        <div class="selector-wrap">
+          <input
+            class="selector-input"
+            id="search-${i}"
+            type="text"
+            placeholder="Buscar plan…"
+            autocomplete="off"
+            readonly
+            onfocus="abrirDropdown(${i})"
+            oninput="filtrarDropdown(${i})"
+          >
+          <span class="selector-arrow">▾</span>
+          <div class="dropdown" id="drop-${i}"></div>
+        </div>
+        <button class="slot-clear" onclick="limpiarSlot(${i})">✕</button>
+      </div>
+      <div class="slot-result" id="result-${i}">
+        <div>
+          <div class="slot-result-label">Total a pagar</div>
+          <div class="slot-result-ahorro" id="ahorro-${i}"></div>
+        </div>
+        <div>
+          <div class="slot-result-total" id="total-${i}"></div>
+          <div class="slot-result-cuota" id="cuota-${i}"></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+      actualizarBtnCalc();
+    }
 
-      if (importe <= 0) {
-        btnShare.classList.remove('visible');
-        cont.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">💰</div>
-        Ingresá un importe para ver los planes disponibles
-      </div>`;
+    // ── DROPDOWN ──────────────────────────────────────────────────────────────────
+    function abrirDropdown(idx) {
+      // hacer editable para buscar
+      const input = document.getElementById(`search-${idx}`);
+      input.removeAttribute('readonly');
+      input.value = '';
+      renderDropdown(idx, '');
+      document.getElementById(`drop-${idx}`).classList.add('open');
+      dropdownAbierto = idx;
+    }
+
+    function cerrarDropdowns() {
+      for (let i = 0; i < N_SLOTS; i++) {
+        const drop = document.getElementById(`drop-${i}`);
+        const input = document.getElementById(`search-${i}`);
+        if (drop) drop.classList.remove('open');
+        if (input) {
+          input.setAttribute('readonly', true);
+          // restaurar texto del plan seleccionado
+          if (seleccion[i]) input.value = seleccion[i].obs || 'Plan ' + seleccion[i].codigo;
+          else input.value = '';
+        }
+      }
+      dropdownAbierto = -1;
+    }
+
+    function filtrarDropdown(idx) {
+      const q = document.getElementById(`search-${idx}`).value;
+      renderDropdown(idx, q);
+    }
+
+    function renderDropdown(idx, query) {
+      const drop = document.getElementById(`drop-${idx}`);
+      // planes ya seleccionados en OTROS slots
+      const usados = seleccion
+        .map((s, i) => i !== idx && s ? s.codigo : null)
+        .filter(Boolean);
+
+      const q = query.toLowerCase();
+      const disponibles = todosLosPlanes.filter(p => {
+        if (usados.includes(p.codigo)) return false;
+        if (!q) return true;
+        return (p.obs || '').toLowerCase().includes(q) ||
+          String(p.codigo).includes(q);
+      });
+
+      if (!disponibles.length) {
+        drop.innerHTML = '<div class="drop-empty">Sin resultados</div>';
         return;
       }
 
-      btnShare.classList.add('visible');
-
-      cont.innerHTML = planes.map(p => {
-        const total = importe * (1 + p.coef / 100);
+      drop.innerHTML = disponibles.map(p => {
         const tipo = p.coef < 0 ? 'desc' : p.coef === 0 ? 'neu' : 'rec';
-        const clase = p.coef < 0 ? 'descuento' : p.coef === 0 ? 'neutro' : 'recargo';
-        const icon = p.coef < 0 ? '✅' : p.coef === 0 ? '💳' : '📋';
-        const badge = p.coef < 0 ? `${p.coef}%` : p.coef === 0 ? 'Sin recargo' : `+${p.coef}%`;
-
-        const cuotasMatch = p.obs.match(/(\d+)\s*cu[eo]/i);
-        const cuotaLine = cuotasMatch
-          ? `<div class="plan-cuota">≈ $${fmt(total / parseInt(cuotasMatch[1]))} x cuota</div>`
-          : '';
-
-        const ahorroLine = p.coef < 0
-          ? `<div class="plan-ahorro">Ahorrás $${fmt(importe - total)}</div>`
-          : '';
-
+        const badge = p.coef < 0 ? `${p.coef}%` : p.coef === 0 ? '0%' : `+${p.coef}%`;
         return `
-      <div class="plan ${clase}">
-        <div class="plan-top">
-          <span class="plan-icon">${icon}</span>
-          <div class="plan-info">
-            <div class="plan-name">${p.obs || 'Plan ' + p.codigo}</div>
-            <div class="plan-sub">Código ${p.codigo}</div>
-          </div>
-          <span class="plan-badge ${tipo}">${badge}</span>
+      <div class="drop-item" onclick="elegirPlan(${idx}, '${p.codigo}')">
+        <div>
+          <div class="drop-item-name">${p.obs || 'Plan ' + p.codigo}</div>
+          <div class="drop-item-code">Cód. ${p.codigo}</div>
         </div>
-        <div class="plan-bottom">
-          <div>
-            <div class="plan-bottom-label">Total a pagar</div>
-            ${ahorroLine}
-          </div>
-          <div>
-            <div class="plan-total ${tipo}">$${fmt(total)}</div>
-            ${cuotaLine}
-          </div>
-        </div>
+        <span class="drop-item-badge ${tipo}">${badge}</span>
       </div>`;
       }).join('');
     }
 
-    // ── COMPARTIR ─────────────────────────────────────────────────────────────────
+    function elegirPlan(idx, codigo) {
+      const plan = todosLosPlanes.find(p => String(p.codigo) === String(codigo));
+      if (!plan) return;
+
+      seleccion[idx] = plan;
+      resultados[idx] = null;
+
+      const slot = document.getElementById(`slot-${idx}`);
+      const input = document.getElementById(`search-${idx}`);
+
+      input.value = plan.obs || 'Plan ' + plan.codigo;
+      input.setAttribute('readonly', true);
+      slot.classList.add('has-plan');
+      slot.classList.remove('has-result', 'descuento', 'recargo', 'neutro');
+      document.getElementById(`result-${idx}`).style.display = 'none';
+
+      cerrarDropdowns();
+      actualizarBtnCalc();
+      // si ya hay importe, recalcular este slot
+      const imp = parseFloat(document.getElementById('importe').value) || 0;
+      if (imp > 0) calcularSlot(idx, imp);
+    }
+
+    function limpiarSlot(idx) {
+      seleccion[idx] = null;
+      resultados[idx] = null;
+
+      const slot = document.getElementById(`slot-${idx}`);
+      const input = document.getElementById(`search-${idx}`);
+
+      input.value = '';
+      slot.classList.remove('has-plan', 'has-result', 'descuento', 'recargo', 'neutro');
+      document.getElementById(`result-${idx}`).style.display = 'none';
+
+      actualizarBtnCalc();
+      document.getElementById('btnShare').classList.remove('visible');
+    }
+
+    // ── CALCULAR ──────────────────────────────────────────────────────────────────
+    function onImporteChange() {
+      // si ya hay resultados, resetearlos
+      resultados = [null, null, null, null];
+      for (let i = 0; i < N_SLOTS; i++) {
+        const slot = document.getElementById(`slot-${i}`);
+        slot.classList.remove('has-result', 'descuento', 'recargo', 'neutro');
+        document.getElementById(`result-${i}`).style.display = 'none';
+      }
+      document.getElementById('btnShare').classList.remove('visible');
+      actualizarBtnCalc();
+    }
+
+    function calcular() {
+      const imp = parseFloat(document.getElementById('importe').value) || 0;
+      if (imp <= 0) return;
+      let alguno = false;
+      for (let i = 0; i < N_SLOTS; i++) {
+        if (seleccion[i]) { calcularSlot(i, imp); alguno = true; }
+      }
+      if (alguno) document.getElementById('btnShare').classList.add('visible');
+    }
+
+    function calcularSlot(idx, importe) {
+      const p = seleccion[idx];
+      if (!p) return;
+      const total = importe * (1 + p.coef / 100);
+      resultados[idx] = total;
+
+      const tipo = p.coef < 0 ? 'desc' : p.coef === 0 ? 'neu' : 'rec';
+      const clase = p.coef < 0 ? 'descuento' : p.coef === 0 ? 'neutro' : 'recargo';
+
+      const cuotasMatch = p.obs.match(/(\d+)\s*cu[eo]/i);
+      document.getElementById(`total-${idx}`).textContent = `$${fmt(total)}`;
+      document.getElementById(`total-${idx}`).className = `slot-result-total ${tipo}`;
+      document.getElementById(`cuota-${idx}`).textContent = cuotasMatch
+        ? `≈ $${fmt(total / parseInt(cuotasMatch[1]))} x cuota` : '';
+      document.getElementById(`ahorro-${idx}`).textContent = p.coef < 0
+        ? `Ahorrás $${fmt(importe - total)}` : '';
+
+      const slot = document.getElementById(`slot-${idx}`);
+      const result = document.getElementById(`result-${idx}`);
+      slot.classList.add('has-result', clase);
+      result.style.display = 'flex';
+    }
+
+    // ── COMPARTIR ──────────────────────────────────────────────────────────────────
     function compartir() {
-      const importe = parseFloat(document.getElementById('importe').value) || 0;
-      if (!importe || !planes.length) return;
+      const imp = parseFloat(document.getElementById('importe').value) || 0;
+      if (!imp) return;
 
-      const lines = planes.map(p => {
-        const total = importe * (1 + p.coef / 100);
+      const lines = seleccion.map((p, i) => {
+        if (!p || resultados[i] === null) return null;
+        const total = resultados[i];
         const cuotasMatch = p.obs.match(/(\d+)\s*cu[eo]/i);
-        const cuotaStr = cuotasMatch
-          ? ` (≈ $${fmt(total / parseInt(cuotasMatch[1]))} x cuota)`
-          : '';
-        const ahorroStr = p.coef < 0 ? ` — ahorrás $${fmt(importe - total)}` : '';
+        const cuotaStr = cuotasMatch ? ` (≈ $${fmt(total / parseInt(cuotasMatch[1]))} x cuota)` : '';
+        const ahorroStr = p.coef < 0 ? ` — ahorrás $${fmt(imp - total)}` : '';
         return `• ${p.obs || 'Plan ' + p.codigo}: *$${fmt(total)}*${cuotaStr}${ahorroStr}`;
-      }).join('\n');
+      }).filter(Boolean).join('\n');
 
-      const texto = `👖 *Andorra Jeans — Planes de Pago*\nImporte: $${fmt(importe)}\n\n${lines}`;
+      const texto = `👖 *Andorra Jeans — Planes de Pago*\nImporte: $${fmt(imp)}\n\n${lines}`;
 
       if (navigator.share) {
         navigator.share({ text: texto }).catch(() => { });
@@ -639,7 +922,14 @@
       }
     }
 
-    // ── UTILS ──────────────────────────────────────────────────────────────────
+    // ── UTILS ─────────────────────────────────────────────────────────────────────
+    function actualizarBtnCalc() {
+      const imp = parseFloat(document.getElementById('importe').value) || 0;
+      const alguno = seleccion.some(s => s !== null);
+      const btn = document.getElementById('btnCalc');
+      btn.classList.toggle('active', imp > 0 && alguno);
+    }
+
     function setSyncDot(state) {
       document.getElementById('syncDot').className = `sync-dot ${state}`;
     }
