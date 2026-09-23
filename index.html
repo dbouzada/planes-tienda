@@ -883,7 +883,7 @@
       const tipo = p.coef < 0 ? 'desc' : p.coef === 0 ? 'neu' : 'rec';
       const clase = p.coef < 0 ? 'descuento' : p.coef === 0 ? 'neutro' : 'recargo';
 
-      const cuotasMatch = p.obs.match(/(\d+)\s*cu[eo]/i);
+      const cuotasMatch = p.obs.match(/(\d+)\s*(?:ctas?|cuotas?)/i);
       document.getElementById(`total-${idx}`).textContent = `$${fmt(total)}`;
       document.getElementById(`total-${idx}`).className = `slot-result-total ${tipo}`;
       document.getElementById(`cuota-${idx}`).textContent = cuotasMatch
@@ -905,7 +905,7 @@
       const lines = seleccion.map((p, i) => {
         if (!p || resultados[i] === null) return null;
         const total = resultados[i];
-        const cuotasMatch = p.obs.match(/(\d+)\s*cu[eo]/i);
+        const cuotasMatch = p.obs.match(/(\d+)\s*(?:ctas?|cuotas?)/i);
         const cuotaStr = cuotasMatch ? ` (≈ $${fmt(total / parseInt(cuotasMatch[1]))} x cuota)` : '';
         const ahorroStr = p.coef < 0 ? ` — ahorrás $${fmt(imp - total)}` : '';
         return `• ${p.obs || 'Plan ' + p.codigo}: *$${fmt(total)}*${cuotaStr}${ahorroStr}`;
